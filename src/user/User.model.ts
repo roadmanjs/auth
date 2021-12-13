@@ -7,7 +7,7 @@ const modelName = 'User';
  * GraphQL Types start
  */
 @InputType('UserTypeInput')
-@ObjectType()
+@ObjectType('UserType')
 export class UserType {
     @Field(() => String, {nullable: true})
     id?: string;

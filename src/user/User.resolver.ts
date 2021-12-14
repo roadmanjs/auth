@@ -1,5 +1,5 @@
 import {Resolver, Query, Mutation, Arg, Ctx, UseMiddleware, ContextType} from 'couchset';
-import {UserType, UserModel, incrementRefreshToken, ResType} from './User.model';
+import {UserType, UserModel, incrementRefreshToken, ResType, UserTypeInput} from './User.model';
 import {sendRefreshToken} from './auth';
 import {isAuth} from '../middlewares/isAuth';
 import isEmpty from 'lodash/isEmpty';
@@ -48,7 +48,7 @@ export class UserResolver {
     @UseMiddleware(isAuth)
     @Mutation(() => ResType)
     async updateUserProfile(
-        @Arg('user', () => UserType) user: UserType,
+        @Arg('user', () => UserTypeInput) user: UserTypeInput,
         @Ctx() {payload}: ContextType
     ): Promise<ResType> {
         try {

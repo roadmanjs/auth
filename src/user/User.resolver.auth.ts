@@ -6,6 +6,7 @@ import {log} from '@roadmanjs/logs';
 import {createNewUser, createLoginToken} from './User.methods';
 import {FirebaseTokenVerify} from '../middlewares/firebaseToken';
 import {sendRefreshToken} from './auth';
+import {allUserModelKeys} from '.';
 
 @Resolver()
 export class UserAuthResolver {
@@ -23,7 +24,7 @@ export class UserAuthResolver {
             log(`LOGIN: phone=${phone} _firebaseToken=${_firebaseToken}`);
 
             const users = await UserModel.pagination({
-                select: '*',
+                select: allUserModelKeys,
                 where: {
                     $or: [{email: {$eq: username}}, {phone: username}, {phone: `+1${username}`}],
                 },
@@ -33,6 +34,7 @@ export class UserAuthResolver {
 
             const firstUser = users || users[0];
             if (!isEmpty(firstUser)) {
+                console.log('first user', firstUser);
                 // user is found
                 const user = firstUser; // get first document
 
@@ -44,6 +46,9 @@ export class UserAuthResolver {
 
                 return response;
             } else {
+                if (!createNew) {
+                    throw new Error('Should not create new user');
+                }
                 // create new
                 const response = await createNewUser({
                     email: '',

@@ -10,64 +10,57 @@ const modelName = 'User';
 @ObjectType('UserType')
 export class UserType {
     @Field(() => String, {nullable: true})
-    id?: string;
-
-    /**
-     * @deprecated use ID instead
-     * tiny hack to work with @stoqey/client-graphql
-     */
-    @Field(() => String, {nullable: true})
-    userId?: string;
+    id?: string = '';
 
     @Field(() => String, {nullable: true})
-    email?: string;
+    email?: string = '';
 
     @Field(() => String, {nullable: true})
-    username?: string;
+    username?: string = '';
 
     @Field(() => String, {nullable: true})
-    fullname?: string;
+    fullname?: string = '';
 
     @Field(() => String, {nullable: true})
-    firstname?: string;
+    firstname?: string = '';
 
     @Field(() => String, {nullable: true})
-    lastname?: string;
+    lastname?: string = '';
 
     @Field(() => String, {nullable: true})
-    phone?: string;
+    phone?: string = '';
 
     @Field(() => String, {nullable: true})
-    website?: string;
+    website?: string = '';
 
     @Field(() => String, {nullable: true})
-    address?: string;
+    address?: string = '';
 
     @Field(() => String, {nullable: true})
-    country?: string;
+    country?: string = '';
 
     @Field(() => String, {nullable: true})
-    bio?: string;
+    bio?: string = '';
 
     @Field(() => String, {nullable: true})
-    avatar?: string;
+    avatar?: string = '';
 
     // Wallet here
     @Field(() => String, {nullable: true})
-    currency?: string;
+    currency?: string = '';
 
     @Field(() => Number, {nullable: true})
-    balance?: number;
+    balance?: number = 0;
 
     @Field(() => Boolean, {nullable: true})
-    admin?: boolean;
+    admin?: boolean = false;
 
     @Field(() => [String], {nullable: true})
-    plans?: string[];
+    plans?: string[] = [];
 
     // Revoke accessToken
     @Field(() => Number, {nullable: true})
-    tokenVersion?: number;
+    tokenVersion?: number = 0;
 
     @Field(() => Date, {nullable: true})
     createdAt?: Date;
@@ -75,6 +68,8 @@ export class UserType {
     @Field(() => Date, {nullable: true})
     updatedAt?: Date;
 }
+
+export const allUserModelKeys: string[] = Object.getOwnPropertyNames(new UserType());
 
 @InputType('UserTypeInput')
 export class UserTypeInput {

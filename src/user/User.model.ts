@@ -12,6 +12,13 @@ export class UserType {
     @Field(() => String, {nullable: true})
     id?: string;
 
+    /**
+     * @deprecated use ID instead
+     * tiny hack to work with @stoqey/client-graphql
+     */
+    @Field(() => String, {nullable: true})
+    userId?: string;
+
     @Field(() => String, {nullable: true})
     email?: string;
 

@@ -6,7 +6,7 @@ import {log} from '@roadmanjs/logs';
 import {createNewUser, createLoginToken} from './User.methods';
 import {FirebaseTokenVerify} from '../middlewares/firebaseToken';
 import {sendRefreshToken} from './auth';
-import {allUserModelKeys} from '.';
+import {allUserModelKeys, UserType} from '.';
 
 @Resolver()
 export class UserAuthResolver {
@@ -32,9 +32,11 @@ export class UserAuthResolver {
 
             log(`users found are users=${users.length}`);
 
-            const firstUser = users || users[0];
+            const foundUsers: UserType[] = users;
+
+            const firstUser = foundUsers[0];
+
             if (!isEmpty(firstUser)) {
-                console.log('first user', firstUser);
                 // user is found
                 const user = firstUser; // get first document
 

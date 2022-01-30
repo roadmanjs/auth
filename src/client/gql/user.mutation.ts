@@ -66,7 +66,7 @@ export const CHANGEPASSWORD_MUTATION = gql`
 `;
 
 export const UPDATE_USER_PROFILE = gql`
-    mutation UpdateUserProfile($user: UserUpdate!) {
+    mutation UpdateUserProfile($user: UserTypeInput!) {
         data: updateUserProfile(user: $user) {
             ...ResTypeFragment
         }

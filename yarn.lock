@@ -356,10 +356,10 @@
     dotenv "^8.2.0"
     lodash "^4.17.20"
 
-"@roadmanjs/utils@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@roadmanjs/utils/-/utils-0.0.3.tgz#8cbfecc3ce452e8075cbee7fef2f6062144532cd"
-  integrity sha512-ShmKxnFHt75iG3KT5aV/PRWFdkrGKfy5DcSLsZ44TVpFiyx2bIPBXnU32OgO3ggHkZ/w9r7IEMdkZkWbd/2ajw==
+"@roadmanjs/utils@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@roadmanjs/utils/-/utils-0.0.4.tgz#7c3a0c9ca11ce40803fca53433ceb76fd8f4daf1"
+  integrity sha512-+0Z+t2OwzVXsYAUE5Fcf1OCSjMSuLj4CAxV3oWWhVt8YqV29h65MyVnY+MbIXx/QUJem/O+kcWIGbDJeJx7Yfg==
   dependencies:
     shelljs "^0.8.5"
 

@@ -46,6 +46,7 @@ export class UserResolver {
         }
     }
 
+    // @UseMiddleware(FirebaseToken)
     @UseMiddleware(isAuth)
     @Mutation(() => ResType)
     async updateUserProfile(
@@ -54,7 +55,9 @@ export class UserResolver {
     ): Promise<ResType> {
         try {
             // TODO client verification for certain fields like phone, email and username only.
-
+            // TODO @phone inject firebase auth for phone number
+            // TODO @email
+            // TODO username just check in database and give error accordingly.
             const userId = payload && payload.userId;
             log('update userId', userId);
 

@@ -34,8 +34,16 @@ jobs:
       - name: "Install"
         run: npm install
 
+      - name: npm publish client
+        run: |
+          npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
+          npm publish "dist-client/" --access=public
+        env:
+          CI: true
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
       # Publish the package
-      - name: npm publish
+      - name: npm publish main
         run: |
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
           npm publish --access=public

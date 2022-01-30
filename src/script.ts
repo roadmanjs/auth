@@ -24,7 +24,7 @@ import {DirArg, buildDirs, createClientPackageJson} from '@roadmanjs/utils';
         extraProps: {
             main: 'index.js',
             types: 'index.d.ts',
-            files: ['docs/', '/gql', 'register/', 'LICENSE'],
+            files: ['index.d.ts', 'docs/', '/gql', 'register/', 'LICENSE'],
         },
     });
 })();

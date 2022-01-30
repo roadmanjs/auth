@@ -5,6 +5,7 @@ import {isAuth} from '../middlewares/isAuth';
 import isEmpty from 'lodash/isEmpty';
 import _get from 'lodash/get';
 import {verify} from 'jsonwebtoken';
+import {log} from '@roadmanjs/logs';
 
 @Resolver()
 export class UserResolver {
@@ -52,9 +53,11 @@ export class UserResolver {
         @Ctx() {payload}: ContextType
     ): Promise<ResType> {
         try {
-            const userId = payload && payload.userId;
+            // TODO client verification for certain fields like phone, email and username only.
 
-            console.log('update userId', userId);
+            const userId = payload && payload.userId;
+            log('update userId', userId);
+
             const findUser = await UserModel.findById(userId);
 
             if (findUser) {
@@ -63,11 +66,11 @@ export class UserResolver {
                     ...user,
                 };
 
-                await UserModel.updateById(userId, updatedUser);
+                const apiUpdateUser = await UserModel.updateById(userId, updatedUser);
 
-                return {success: true};
+                return {success: true, data: apiUpdateUser};
             }
-            throw new Error('error updateing user');
+            throw new Error('error updating user');
         } catch (err) {
             return {success: false, message: err && err.message};
         }

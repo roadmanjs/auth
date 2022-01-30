@@ -1,5 +1,6 @@
 import {Field, InputType, Model, ObjectType} from 'couchset';
 
+import GraphQLJSON from 'graphql-type-json';
 import {isEmpty} from 'lodash';
 
 const modelName = 'User';
@@ -83,9 +84,6 @@ export const allUserModelKeys: string[] = Object.getOwnPropertyNames(new UserTyp
 @InputType('UserTypeInput')
 export class UserTypeInput {
     @Field(() => String, {nullable: true})
-    id?: string;
-
-    @Field(() => String, {nullable: true})
     email?: string;
 
     @Field(() => String, {nullable: true})
@@ -126,29 +124,6 @@ export class UserTypeInput {
 
     @Field(() => String, {nullable: true})
     avatar?: string;
-
-    // Wallet here
-    @Field(() => String, {nullable: true})
-    currency?: string;
-
-    @Field(() => Number, {nullable: true})
-    balance?: number;
-
-    @Field(() => Boolean, {nullable: true})
-    admin?: boolean;
-
-    @Field(() => [String], {nullable: true})
-    plans?: string[];
-
-    // Revoke accessToken
-    @Field(() => Number, {nullable: true})
-    tokenVersion?: number;
-
-    @Field(() => Date, {nullable: true})
-    createdAt?: Date;
-
-    @Field(() => Date, {nullable: true})
-    updatedAt?: Date;
 }
 
 export const userModelPublicSelectors = [
@@ -194,6 +169,10 @@ export class ResType {
 
     @Field(() => String, {nullable: true})
     message?: string;
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Field((type) => GraphQLJSON, {nullable: true})
+    data?: any;
 }
 
 export const UserModel: Model = new Model(modelName);

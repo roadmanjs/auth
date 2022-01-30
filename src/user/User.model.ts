@@ -113,6 +113,15 @@ export class UserTypeInput {
     country?: string;
 
     @Field(() => String, {nullable: true})
+    city?: string = '';
+
+    @Field(() => String, {nullable: true})
+    state?: string = '';
+
+    @Field(() => String, {nullable: true})
+    zipcode?: string = '';
+
+    @Field(() => String, {nullable: true})
     bio?: string;
 
     @Field(() => String, {nullable: true})
@@ -152,6 +161,9 @@ export const userModelPublicSelectors = [
     'phone',
     'website',
     'address',
+    'city',
+    'state',
+    'zipcode',
     'country',
     'bio',
     'avatar',

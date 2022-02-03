@@ -162,7 +162,7 @@ export class LoginResponseType {
     user: UserType;
 }
 
-@ObjectType()
+@ObjectType('AuthResType')
 export class ResType {
     @Field(() => Boolean, {nullable: false})
     success: boolean;

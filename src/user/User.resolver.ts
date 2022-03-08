@@ -1,5 +1,5 @@
 import {Resolver, Query, Mutation, Arg, Ctx, UseMiddleware, ContextType} from 'couchset';
-import {UserType, UserModel, incrementRefreshToken, ResType, UserTypeInput} from './User.model';
+import {UserType, UserModel, incrementRefreshToken, AuthResType, UserTypeInput} from './User.model';
 import {sendRefreshToken} from './auth';
 import {isAuth} from '../middlewares/isAuth';
 import isEmpty from 'lodash/isEmpty';
@@ -32,9 +32,11 @@ export class UserResolver {
         }
     }
 
-    @Mutation(() => ResType)
+    @Mutation(() => AuthResType)
     @UseMiddleware(isAuth)
-    async revokeRefreshTokenForUser(@Arg('userId', () => String) userId: string): Promise<ResType> {
+    async revokeRefreshTokenForUser(
+        @Arg('userId', () => String) userId: string
+    ): Promise<AuthResType> {
         try {
             const updated = await incrementRefreshToken(userId);
             if (!updated) {
@@ -48,11 +50,11 @@ export class UserResolver {
 
     // @UseMiddleware(FirebaseToken)
     @UseMiddleware(isAuth)
-    @Mutation(() => ResType)
+    @Mutation(() => AuthResType)
     async updateUserProfile(
         @Arg('user', () => UserTypeInput) user: UserTypeInput,
         @Ctx() {payload}: ContextType
-    ): Promise<ResType> {
+    ): Promise<AuthResType> {
         try {
             // TODO client verification for certain fields like phone, email and username only.
             // TODO @phone inject firebase auth for phone number

@@ -1,5 +1,5 @@
+import {AuthResTypeFragment} from './shared';
 import {LoginResponseTypeFragment} from './user.fragment';
-import {ResTypeFragment} from './shared';
 import gql from 'graphql-tag';
 
 export const UPDATE_USER_WALLET = gql`
@@ -41,10 +41,10 @@ export const REGISTER_MUTATION = gql`
 export const ADD_USER_MUTATION = gql`
     mutation AddUser($user: CreateUserArgs!) {
         data: addUser(user: $user) {
-            ...ResTypeFragment
+            ...AuthResTypeFragment
         }
     }
-    ${ResTypeFragment}
+    ${AuthResTypeFragment}
 `;
 
 export const FORGOTPASSWORD_MUTATION = gql`
@@ -68,8 +68,8 @@ export const CHANGEPASSWORD_MUTATION = gql`
 export const UPDATE_USER_PROFILE = gql`
     mutation UpdateUserProfile($user: UserTypeInput!) {
         data: updateUserProfile(user: $user) {
-            ...ResTypeFragment
+            ...AuthResTypeFragment
         }
     }
-    ${ResTypeFragment}
+    ${AuthResTypeFragment}
 `;

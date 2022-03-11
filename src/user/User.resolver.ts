@@ -1,4 +1,4 @@
-import {Resolver, Query, Mutation, Arg, Ctx, UseMiddleware, ContextType} from 'couchset';
+import {Resolver, Query, Mutation, Arg, Ctx, UseMiddleware} from 'couchset';
 import {UserType, UserModel, incrementRefreshToken, AuthResType, UserTypeInput} from './User.model';
 import {sendRefreshToken} from './auth';
 import {isAuth} from '../middlewares/isAuth';
@@ -6,6 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 import _get from 'lodash/get';
 import {verify} from 'jsonwebtoken';
 import {log} from '@roadmanjs/logs';
+import {ContextType} from '../shared';
 
 @Resolver()
 export class UserResolver {

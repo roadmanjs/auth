@@ -1,12 +1,12 @@
-import {Resolver, Mutation, Arg, Ctx, UseMiddleware, ContextType} from 'couchset';
+import {Resolver, Mutation, Arg, Ctx, UseMiddleware} from 'couchset';
 import isEmpty from 'lodash/isEmpty';
-import {UserModel, LoginResponseType} from './User.model';
+import {UserModel, LoginResponseType, UserType, allUserModelKeys} from './User.model';
 import {log} from '@roadmanjs/logs';
 
 import {createNewUser, createLoginToken} from './User.methods';
 import {FirebaseTokenVerify} from '../middlewares/firebaseToken';
 import {sendRefreshToken} from './auth';
-import {allUserModelKeys, UserType} from '.';
+import {ContextType} from '../shared';
 
 @Resolver()
 export class UserAuthResolver {

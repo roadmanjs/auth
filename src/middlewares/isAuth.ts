@@ -1,6 +1,7 @@
-import {ContextType, MiddlewareFn} from 'couchset';
 import {get as _get, isEmpty} from 'lodash';
 
+import {ContextType} from '../shared';
+import {MiddlewareFn} from 'couchset';
 import {log} from '@roadmanjs/logs';
 import {verify} from 'jsonwebtoken';
 

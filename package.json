@@ -76,6 +76,7 @@
         "@roadmanjs/firebase-admin": "^0.0.4",
         "@roadmanjs/logs": "^0.0.1",
         "@roadmanjs/utils": "^0.0.4",
+        "graphql-redis-subscriptions": "^2.4.2",
         "jsonwebtoken": "^8.5.1"
     }
 }

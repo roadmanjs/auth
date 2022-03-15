@@ -55,6 +55,9 @@ export class UserType {
     @Field(() => String, {nullable: true})
     avatar?: string = '';
 
+    @Field(() => String, {nullable: true})
+    coverImage?: string = '';
+
     // Wallet here
     @Field(() => String, {nullable: true})
     currency?: string = '';
@@ -124,6 +127,9 @@ export class UserTypeInput {
 
     @Field(() => String, {nullable: true})
     avatar?: string;
+
+    @Field(() => String, {nullable: true})
+    coverImage?: string;
 }
 
 export const userModelPublicSelectors = [
@@ -142,6 +148,7 @@ export const userModelPublicSelectors = [
     'country',
     'bio',
     'avatar',
+    'coverImage',
 ];
 
 @ObjectType()

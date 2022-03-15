@@ -16,7 +16,7 @@ export interface UserType {
     state?: string;
     city?: string;
     zipcode?: string;
-    convoImage?: string;
+    coverImage?: string;
     avatar?: string;
     tokenVersion?: number;
     balance: number;

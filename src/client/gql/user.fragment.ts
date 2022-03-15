@@ -16,7 +16,7 @@ export interface UserType {
     state?: string;
     city?: string;
     zipcode?: string;
-    image?: string;
+    convoImage?: string;
     avatar?: string;
     tokenVersion?: number;
     balance: number;
@@ -46,6 +46,7 @@ export const UserTypeFragment = gql`
         city
         zipcode
         tokenVersion
+        coverImage
         avatar
         balance
         currency

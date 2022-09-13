@@ -3,12 +3,12 @@ import {LoginResponseType} from './User.model';
 import {log} from '@roadmanjs/logs';
 
 import {phoneLogin} from './User.methods';
-import {FirebaseTokenVerify} from '../middlewares/firebaseToken';
+import {FirebaseTokenMiddleware} from '../middlewares/firebaseToken';
 
 @Resolver()
 export class UserAuthResolver {
     @Mutation(() => LoginResponseType)
-    @UseMiddleware(FirebaseTokenVerify)
+    @UseMiddleware(FirebaseTokenMiddleware())
     async phoneLogin(
         @Arg('phone', () => String, {nullable: false}) phone: string,
         @Arg('firebaseToken', () => String, {nullable: false}) _firebaseToken: string,

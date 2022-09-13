@@ -1,8 +1,61 @@
-import UserModel, {LoginResponseType, UserType} from './User.model';
+import UserModel, {allUserModelKeys, LoginResponseType, UserType} from './User.model';
 import _, {isEmpty} from 'lodash';
 import {createAccessToken, createRefreshToken} from './auth';
 
 import {log} from '@roadmanjs/logs';
+
+export const phoneLogin = async (phone: string, createNew = false): Promise<LoginResponseType> => {
+    try {
+        const username = phone;
+
+        log(`LOGIN: phone=${phone}`);
+
+        const users = await UserModel.pagination({
+            select: allUserModelKeys,
+            where: {
+                $or: [{email: {$eq: username}}, {phone: username}, {phone: `+1${username}`}],
+            },
+        });
+
+        log(`users found are users=${users.length}`);
+
+        const foundUsers: UserType[] = users;
+
+        const firstUser = foundUsers[0];
+
+        if (!isEmpty(firstUser)) {
+            // user is found
+            const user = firstUser; // get first document
+
+            const response = await createLoginToken(user); // login user without password
+
+            return response;
+        } else {
+            if (!createNew) {
+                throw new Error('Should not create new user');
+            }
+            // create new
+            const response = await createNewUser({
+                email: '',
+                fullname: '',
+                phone,
+            });
+
+            log(`creating new user =${JSON.stringify(response)}`);
+
+            return response;
+        }
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: error && error.message,
+            accessToken: null,
+            refreshToken: null,
+            user: null,
+        } as unknown as LoginResponseType;
+    }
+};
 
 /**
  * Shared Create user method

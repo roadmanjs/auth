@@ -5,6 +5,10 @@ import {MiddlewareFn} from 'couchset';
 import {log} from '@roadmanjs/logs';
 import {verify} from 'jsonwebtoken';
 
+export const verifyAuthToken = (token: string, secret: string) => {
+    const verified = verify(token, secret, {ignoreExpiration: false});
+    return verified;
+};
 /**
  *
  * @sets context.payload = { userId, iat, exp }
@@ -21,7 +25,7 @@ export const isAuth: MiddlewareFn<ContextType> = ({context}, next) => {
 
     try {
         const token = authorization.split(' ')[1];
-        const verified = verify(token, accessTokenSecret);
+        const verified = verifyAuthToken(token, accessTokenSecret);
         context.payload = verified;
     } catch (err) {
         log('not authenticated');

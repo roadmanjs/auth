@@ -5,7 +5,8 @@ import {MiddlewareFn} from 'couchset';
 import {log} from '@roadmanjs/logs';
 import {verify} from 'jsonwebtoken';
 
-export const verifyAuthToken = (token: string, secret: string) => {
+export const verifyAuthToken = (token: string) => {
+    const secret = _get(process.env, 'ACCESS_TOKEN_SECRET', '');
     const verified = verify(token, secret, {ignoreExpiration: false});
     return verified;
 };
@@ -17,7 +18,6 @@ export const verifyAuthToken = (token: string, secret: string) => {
  */
 export const isAuth: MiddlewareFn<ContextType> = ({context}, next) => {
     const authorization = _get(context, 'req.headers.authorization', '');
-    const accessTokenSecret = _get(process.env, 'ACCESS_TOKEN_SECRET', '');
 
     if (isEmpty(authorization)) {
         throw new Error('Not Authenticated');
@@ -25,7 +25,7 @@ export const isAuth: MiddlewareFn<ContextType> = ({context}, next) => {
 
     try {
         const token = authorization.split(' ')[1];
-        const verified = verifyAuthToken(token, accessTokenSecret);
+        const verified = verifyAuthToken(token);
         context.payload = verified;
     } catch (err) {
         log('not authenticated');

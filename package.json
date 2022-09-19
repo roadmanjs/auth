@@ -22,6 +22,7 @@
         "build": "rm -rf dist && ./node_modules/.bin/tsc --skipLibCheck && npm run client",
         "client": "node dist/script.js",
         "test": "mocha src/*test.ts --exit",
+        "users": "mocha src/user/*test.ts --exit",
         "eslint": "eslint ./src --fix --ext=ts"
     },
     "lint-staged": {
@@ -35,6 +36,7 @@
         }
     },
     "devDependencies": {
+        "@faker-js/faker": "^7.5.0",
         "@types/chai": "^4.2.14",
         "@types/chalk": "^2.2.0",
         "@types/debug": "^4.1.5",
@@ -77,6 +79,7 @@
         "@roadmanjs/logs": "^0.0.1",
         "@roadmanjs/utils": "^0.0.4",
         "graphql-redis-subscriptions": "^2.4.2",
-        "jsonwebtoken": "^8.5.1"
+        "jsonwebtoken": "^8.5.1",
+        "reflect-metadata": "^0.1.13"
     }
 }

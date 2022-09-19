@@ -1,7 +1,15 @@
-import UserModel, {allUserModelKeys, LoginResponseType, UserType} from './User.model';
+import UserModel, {
+    LoginResponseType,
+    UserType,
+    allUserModelKeys,
+    userModelName,
+    userModelPublicSelectors,
+} from './User.model';
 import _, {isEmpty} from 'lodash';
 import {createAccessToken, createRefreshToken} from './auth';
 
+import {awaitTo} from 'couchset/dist/utils';
+import {connectionOptions} from '@roadmanjs/couchset';
 import {log} from '@roadmanjs/logs';
 
 export const phoneLogin = async (phone: string, createNew = false): Promise<LoginResponseType> => {
@@ -62,7 +70,7 @@ export const phoneLogin = async (phone: string, createNew = false): Promise<Logi
  * @param args
  */
 export const createNewUser = async (args: UserType): Promise<LoginResponseType> => {
-    const {email, fullname, phone, balance = 1} = args;
+    const {email, fullname, phone, balance = 1, ...otherFields} = args;
     try {
         const findIfExits = await UserModel.pagination({
             where: {
@@ -79,6 +87,7 @@ export const createNewUser = async (args: UserType): Promise<LoginResponseType> 
         const lastname = names.length ? names[1] : null;
 
         const user: UserType = {
+            ...otherFields,
             fullname,
             firstname,
             lastname,
@@ -132,5 +141,48 @@ export const createLoginToken = async (user: UserType): Promise<LoginResponseTyp
     } catch (error) {
         console.error('error login in', error);
         throw error;
+    }
+};
+
+export const searchUserPublic = async (search: string, limit = 20): Promise<UserType[]> => {
+    try {
+        const searchString = search.toLowerCase();
+        const bucket = connectionOptions.bucketName;
+
+        const query = `
+        SELECT ${userModelPublicSelectors.join()}
+        FROM \`${bucket}\` AS ${bucket}
+        WHERE _type = "${userModelName}" 
+            AND ( 
+               REGEXP_CONTAINS(lower(firstname), "${searchString}+.*")
+            OR REGEXP_CONTAINS(lower(lastname), "${searchString}+.*")
+            OR REGEXP_CONTAINS(lower(fullname), "${searchString}+.*")
+            OR REGEXP_CONTAINS(lower(phone), "${searchString}+.*")
+            )
+            LIMIT ${limit};
+        `;
+
+        const [errorFetching, data = []] = await awaitTo(
+            UserModel.customQuery<UserType[]>({
+                limit,
+                query,
+                params: {limit},
+            })
+        );
+
+        if (errorFetching) {
+            throw errorFetching;
+        }
+
+        const [rows = []] = data;
+
+        const parsedItems = rows.map((row) => UserModel.parse(row));
+
+        console.log('user search items', {parsedItems: parsedItems.length, rows: rows.length});
+
+        return parsedItems as UserType[];
+    } catch (error) {
+        log('error getting ads listing methods', error);
+        return [];
     }
 };

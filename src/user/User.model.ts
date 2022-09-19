@@ -3,7 +3,7 @@ import {Field, InputType, Model, ObjectType} from 'couchset';
 import GraphQLJSON from 'graphql-type-json';
 import {isEmpty} from 'lodash';
 
-const modelName = 'User';
+export const userModelName = 'User';
 /**
  * GraphQL Types start
  */
@@ -182,7 +182,7 @@ export class AuthResType {
     data?: any;
 }
 
-export const UserModel: Model = new Model(modelName);
+export const UserModel: Model = new Model(userModelName);
 
 /**
  * Methods

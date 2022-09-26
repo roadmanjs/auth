@@ -11,7 +11,7 @@ export const sendRefreshToken = (res: Response, token: string) => {
 
 export const createAccessToken = (user: UserType) => {
     return sign({userId: user.id}, process.env.ACCESS_TOKEN_SECRET!, {
-        expiresIn: '3d',
+        expiresIn: process.env.ACCESS_TOKEN_EXPIRE || '3d',
     });
 };
 
@@ -20,7 +20,7 @@ export const createRefreshToken = (user: UserType) => {
         {userId: user.id, tokenVersion: user.tokenVersion},
         process.env.REFRESH_TOKEN_SECRET!,
         {
-            expiresIn: '7d',
+            expiresIn: process.env.REFRESH_TOKEN_EXPIRE || '7d',
         }
     );
 };

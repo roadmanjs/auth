@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 
 export interface UserType {
     id: string;
+    admin?: boolean;
     username?: string;
     fullname?: string;
     firstname: string;
@@ -32,6 +33,7 @@ export interface LoginResponseType extends ResType {
 export const UserTypeFragment = gql`
     fragment UserTypeFragment on UserType {
         id
+        admin
         username
         fullname
         firstname

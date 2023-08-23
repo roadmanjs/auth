@@ -17,6 +17,9 @@ export class UserType {
     email?: string = '';
 
     @Field(() => String, {nullable: true})
+    hash?: string = '';
+
+    @Field(() => String, {nullable: true})
     username?: string = '';
 
     @Field(() => String, {nullable: true})

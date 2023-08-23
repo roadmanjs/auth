@@ -8,9 +8,123 @@ import UserModel, {
 import _, {isEmpty} from 'lodash';
 import {createAccessToken, createRefreshToken} from './auth';
 
+import argon2 from 'argon2';
 import {awaitTo} from 'couchset/dist/utils';
 import {connectionOptions} from '@roadmanjs/couchset';
 import {log} from '@roadmanjs/logs';
+
+const passwordVerify = async (hash: string, password: string): Promise<boolean> => {
+    try {
+        if (await argon2.verify(hash, password)) {
+            // password match
+            return true;
+        } else {
+            // password did not match
+        }
+        return false;
+    } catch (err) {
+        // internal failure
+        return false;
+    }
+};
+
+export const checkUsernameExists = async (username: string): Promise<boolean> => {
+    log(`CheckUsernameExists: username=${username}`);
+
+    const users = await UserModel.pagination({
+        select: allUserModelKeys,
+        where: {
+            $or: [{email: {$eq: username}}, {username}],
+        },
+    });
+
+    log(`users found are users=${users.length}`);
+
+    if (isEmpty(users)) {
+        return false;
+    }
+
+    return true;
+};
+
+export const passwordLogin = async (
+    username: string,
+    password: string,
+    createNew = false
+): Promise<LoginResponseType> => {
+    try {
+        log(`PWLOGIN: username=${username}`);
+
+        if (isEmpty(username)) {
+            throw new Error('username is required');
+        }
+
+        if (isEmpty(password)) {
+            throw new Error('password is required');
+        }
+
+        const users = await UserModel.pagination({
+            select: allUserModelKeys,
+            where: {
+                $or: [{email: {$eq: username}}, {username}],
+            },
+        });
+
+        log(`users found are users=${users.length}`);
+
+        const foundUsers: UserType[] = users;
+
+        const firstUser = foundUsers[0];
+
+        if (!isEmpty(firstUser)) {
+            if (createNew) {
+                throw new Error('Account already exists, please login');
+            }
+
+            // login
+
+            // user is found
+            const user = firstUser; // get first document
+
+            const passwordMatch = await passwordVerify(user.hash, password);
+
+            if (!passwordMatch) {
+                // TODO make it more generic, broad.
+                throw new Error('password did not match');
+            }
+
+            const response = await createLoginToken(user); // login user without password
+
+            return response;
+        } else {
+            if (!createNew) {
+                throw new Error('Should create a new account');
+            }
+            // create new
+            const response = await createNewUser(
+                {
+                    email: '',
+                    fullname: '',
+                    username,
+                },
+                password
+            );
+
+            log(`creating new user =${JSON.stringify(response)}`);
+
+            return response;
+        }
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: error && error.message,
+            accessToken: null,
+            refreshToken: null,
+            user: null,
+        } as unknown as LoginResponseType;
+    }
+};
 
 export const phoneLogin = async (phone: string, createNew = false): Promise<LoginResponseType> => {
     try {
@@ -40,7 +154,7 @@ export const phoneLogin = async (phone: string, createNew = false): Promise<Logi
             return response;
         } else {
             if (!createNew) {
-                throw new Error('Should not create new user');
+                throw new Error('Should create a new account');
             }
             // create new
             const response = await createNewUser({
@@ -69,14 +183,28 @@ export const phoneLogin = async (phone: string, createNew = false): Promise<Logi
  * Shared Create user method
  * @param args
  */
-export const createNewUser = async (args: UserType): Promise<LoginResponseType> => {
-    const {email, fullname, phone, balance = 1, ...otherFields} = args;
+export const createNewUser = async (
+    args: UserType,
+    password?: string
+): Promise<LoginResponseType> => {
+    const {email, fullname, phone, username, balance = 1, ...otherFields} = args;
+
+    const isPhoneAuth = isEmpty(password);
+
     try {
-        const findIfExits = await UserModel.pagination({
+        let findIfExits = await UserModel.pagination({
             where: {
-                $or: [{email: {$eq: email}}, {phone: phone}],
+                $or: [{email: {$eq: email}}, {username}],
             },
         });
+
+        if (isPhoneAuth) {
+            findIfExits = await UserModel.pagination({
+                where: {
+                    $or: [{email: {$eq: email}}, {phone: phone}, {username}],
+                },
+            });
+        }
 
         if (!isEmpty(findIfExits)) {
             throw new Error('user already exists');
@@ -85,6 +213,11 @@ export const createNewUser = async (args: UserType): Promise<LoginResponseType> 
         const names = (fullname || '').split(' ');
         const firstname = names.length ? names[0] : null;
         const lastname = names.length ? names[1] : null;
+        let passwordHash = '';
+
+        if (!isPhoneAuth) {
+            passwordHash = await argon2.hash(password);
+        }
 
         const user: UserType = {
             ...otherFields,
@@ -95,6 +228,8 @@ export const createNewUser = async (args: UserType): Promise<LoginResponseType> 
             email,
             balance,
             currency: 'USD',
+            hash: passwordHash,
+            username,
         };
 
         log('New user account', JSON.stringify(user));
@@ -178,7 +313,7 @@ export const searchUserPublic = async (search: string, limit = 20): Promise<User
 
         const parsedItems = rows.map((row) => UserModel.parse(row));
 
-        console.log('user search items', {parsedItems: parsedItems.length, rows: rows.length});
+        log('user search items', {parsedItems: parsedItems.length, rows: rows.length});
 
         return parsedItems as UserType[];
     } catch (error) {

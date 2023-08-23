@@ -76,10 +76,11 @@
         "typescript": ">=2.0"
     },
     "dependencies": {
-        "@roadmanjs/couchset": "^0.0.3",
-        "@roadmanjs/firebase-admin": "^0.0.16",
+        "@roadmanjs/couchset": "^0.0.9",
+        "@roadmanjs/firebase-admin": "^0.0.24",
         "@roadmanjs/logs": "^0.0.1",
         "@roadmanjs/utils": "^0.0.4",
+        "@stoqey/client-graphql": "^1.1.13",
         "argon2": "^0.31.0",
         "graphql-redis-subscriptions": "^2.4.2",
         "jsonwebtoken": "^8.5.1",

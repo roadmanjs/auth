@@ -25,7 +25,7 @@ export class UserAuthResolver {
     async passwordLogin(
         @Arg('username', () => String, {nullable: false}) username: string,
         @Arg('password', () => String, {nullable: false}) password: string,
-        @Arg('createNew', () => Boolean, {nullable: true}) createNew: boolean
+        @Arg('createNew', () => Boolean, {nullable: false}) createNew: boolean
         // captcha code
         // @Ctx() {res}: ContextType
     ): Promise<LoginResponseType> {

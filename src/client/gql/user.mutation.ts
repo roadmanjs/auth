@@ -20,6 +20,15 @@ export const PHONE_LOGIN_MUTATION = gql`
     ${LoginResponseTypeFragment}
 `;
 
+export const PASSWORD_LOGIN_MUTATION = gql`
+    mutation PasswordLogin($username: String!, $password: String!, $createNew: Boolean!) {
+        data: passwordLogin(username: $username, password: $password, createNew: $createNew) {
+            ...LoginResponseTypeFragment
+        }
+    }
+    ${LoginResponseTypeFragment}
+`;
+
 export const LOGIN_MUTATION = gql`
     mutation Login($password: String!, $email: String!) {
         data: login(password: $password, email: $email) {

@@ -1,3 +1,4 @@
+import {AuthResTypeFragment} from './shared';
 import {UserTypeFragment} from './user.fragment';
 import gql from 'graphql-tag';
 
@@ -35,4 +36,13 @@ export const GET_USER_PUBLIC = gql`
         }
     }
     ${UserTypeFragment}
+`;
+
+export const CHECK_USERNAME_MUTATION = gql`
+    query CheckUsername($username: String!) {
+        data: checkUsername(username: $username) {
+            ...AuthResTypeFragment
+        }
+    }
+    ${AuthResTypeFragment}
 `;

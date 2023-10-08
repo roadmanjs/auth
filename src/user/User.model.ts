@@ -20,6 +20,9 @@ export class UserType {
     hash?: string = '';
 
     @Field(() => String, {nullable: true})
+    mnemonicHash?: string = '';
+
+    @Field(() => String, {nullable: true})
     username?: string = '';
 
     @Field(() => String, {nullable: true})
@@ -67,6 +70,9 @@ export class UserType {
 
     @Field(() => Number, {nullable: true})
     balance?: number = 0;
+
+    @Field(() => Boolean, {nullable: true})
+    auth2?: boolean = false;
 
     @Field(() => Boolean, {nullable: true})
     admin?: boolean = false;

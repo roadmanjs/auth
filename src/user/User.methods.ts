@@ -10,6 +10,7 @@ import {createAccessToken, createRefreshToken} from './auth';
 
 import argon2 from 'argon2';
 import {awaitTo} from 'couchset/dist/utils';
+import bip39 from 'bip39';
 import {connectionOptions} from '@roadmanjs/couchset';
 import {log} from '@roadmanjs/logs';
 
@@ -213,10 +214,14 @@ export const createNewUser = async (
         const names = (fullname || '').split(' ');
         const firstname = names.length ? names[0] : null;
         const lastname = names.length ? names[1] : null;
-        let passwordHash = '';
+        let passwordHash = '',
+            mnemonicHash = '',
+            mnemonic = '';
 
         if (!isPhoneAuth) {
             passwordHash = await argon2.hash(password);
+            mnemonic = bip39.generateMnemonic();
+            mnemonicHash = await argon2.hash(mnemonic);
         }
 
         const user: UserType = {
@@ -229,6 +234,7 @@ export const createNewUser = async (
             balance,
             currency: 'USD',
             hash: passwordHash,
+            mnemonicHash,
             username,
         };
 
@@ -243,7 +249,7 @@ export const createNewUser = async (
 
         return {
             success: true,
-            user: createdUser,
+            user: {...createdUser, mnemonic} as any, // one time see only
             refreshToken,
             accessToken,
         };

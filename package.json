@@ -24,7 +24,8 @@
         "test": "mocha src/*test.ts --exit",
         "test-server": "ts-node src/tests/server.ts",
         "users": "mocha src/user/*test.ts --exit",
-        "eslint": "eslint ./src --fix --ext=ts"
+        "eslint": "eslint ./src --fix --ext=ts",
+        "pub": "npm publish 'dist-client/' --access=public && npm publish --access=public"
     },
     "lint-staged": {
         "*.{ts,tsx}": [

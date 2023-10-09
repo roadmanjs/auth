@@ -1,3 +1,5 @@
+import * as bip39 from 'bip39';
+
 import UserModel, {
     LoginResponseType,
     UserType,
@@ -10,7 +12,6 @@ import {createAccessToken, createRefreshToken} from './auth';
 
 import argon2 from 'argon2';
 import {awaitTo} from 'couchset/dist/utils';
-import bip39 from 'bip39';
 import {connectionOptions} from '@roadmanjs/couchset';
 import {log} from '@roadmanjs/logs';
 

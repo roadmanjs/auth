@@ -1,6 +1,6 @@
 {
     "name": "@roadmanjs/auth",
-    "version": "0.0.33",
+    "version": "0.0.34",
     "description": " An auth roadman using a UserType model in Couchbase and firebase-auth",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -25,7 +25,7 @@
         "test-server": "ts-node src/tests/server.ts",
         "users": "mocha src/user/*test.ts --exit",
         "eslint": "eslint ./src --fix --ext=ts",
-        "pub": "npm publish 'dist-client/' --access=public && npm publish --access=public"
+        "pub": "yarn publish 'dist-client/' --access=public && yarn publish --access=public"
     },
     "lint-staged": {
         "*.{ts,tsx}": [

@@ -15,7 +15,7 @@ import {awaitTo} from 'couchset/dist/utils';
 import {connectionOptions} from '@roadmanjs/couchset';
 import {log} from '@roadmanjs/logs';
 
-const passwordVerify = async (hash: string, password: string): Promise<boolean> => {
+export const argonVerifyHash = async (hash: string, password: string): Promise<boolean> => {
     try {
         if (await argon2.verify(hash, password)) {
             // password match
@@ -88,7 +88,7 @@ export const passwordLogin = async (
             // user is found
             const user = firstUser; // get first document
 
-            const passwordMatch = await passwordVerify(user.hash, password);
+            const passwordMatch = await argonVerifyHash(user.hash, password);
 
             if (!passwordMatch) {
                 // TODO make it more generic, broad.

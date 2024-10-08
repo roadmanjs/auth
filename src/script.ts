@@ -7,7 +7,7 @@ import {DirArg, buildDirs, createClientPackageJson} from '@roadmanjs/utils';
         {cmd: 'mkdir', dir: 'dist-client'},
         {cmd: 'cp', dir: 'dist/client/gql', newDir: 'dist-client'},
         {cmd: 'cp', dir: 'register', newDir: 'dist-client/register'},
-        {cmd: 'cp', dir: 'docs', newDir: 'dist-client/docs'},
+        // {cmd: 'cp', dir: 'docs', newDir: 'dist-client/docs'},
         {cmd: 'cp', dir: 'README.md', newDir: 'dist-client/README.md'},
         // {cmd: 'cp', dir: 'LICENSE', newDir: 'dist-client/LICENSE'},
         {cmd: 'cp', dir: 'dist/client/index.js', newDir: 'dist-client/index.js'},

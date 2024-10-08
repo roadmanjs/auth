@@ -1,6 +1,6 @@
 {
     "name": "@roadmanjs/auth",
-    "version": "0.0.35",
+    "version": "0.1.0",
     "description": " An auth roadman using a UserType model in Couchbase and firebase-auth",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -71,14 +71,14 @@
         "typescript": "^4.4.3"
     },
     "peerDependencies": {
-        "@roadmanjs/couchset": ">=0.0.3",
-        "@roadmanjs/firebase-admin": ">=0.0.16",
+        "@roadmanjs/couchset": ">=0.1.1",
+        "@roadmanjs/firebase-admin": ">=0.1.1",
         "@roadmanjs/logs": ">=0.0.1",
         "typescript": ">=2.0"
     },
     "dependencies": {
-        "@roadmanjs/couchset": "^0.0.9",
-        "@roadmanjs/firebase-admin": "^0.0.24",
+        "@roadmanjs/couchset": "^0.1.1",
+        "@roadmanjs/firebase-admin": "^0.1.1",
         "@roadmanjs/logs": "^0.0.1",
         "@roadmanjs/utils": "^0.0.4",
         "@stoqey/client-graphql": "^1.1.13",
